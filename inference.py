@@ -1,17 +1,15 @@
 import torch
 import torch.nn as nn
-from torchvision import models, transforms
+from torchvision.models import efficientnet_b0
+from torchvision import transforms
 from PIL import Image
 
-# ---- Configuration ----
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 MODEL_PATH = "best_model.pth"
 CLASSES = ["normal", "asymmetry_detected"]
 
-# ---- Model Loading ----
 def load_model():
-    model = models.efficientnet_b0(weights=None)
-
+    model = efficientnet_b0(weights=None)
     num_ftrs = model.classifier[1].in_features
     model.classifier[1] = nn.Linear(num_ftrs, 2)
 
@@ -24,7 +22,6 @@ def load_model():
 
 model = load_model()
 
-# ---- Preprocessing ----
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
@@ -34,7 +31,6 @@ transform = transforms.Compose([
     )
 ])
 
-# ---- Prediction ----
 def predict(image: Image.Image):
     tensor = transform(image).unsqueeze(0).to(DEVICE)
 
