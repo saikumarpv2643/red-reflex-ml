@@ -3,6 +3,7 @@
 fastapi
 uvicorn
 pillow
+python-multipart
 numpy<2.0
 torch==2.0.1+cpu
 torchvision==0.15.2+cpu
